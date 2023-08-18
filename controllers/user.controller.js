@@ -1,14 +1,18 @@
-import { response } from "express";
+import { request, response } from "express";
 
-export const userGet = (req, res = response) => {
+export const userGet = (req = request, res = response) => {
+  const query = req.query;
   res.json({
     msg: "GET API - controller",
+    query,
   });
 };
 
 export const userPut = (req, res = response) => {
+  const id = req.params.id;
   res.json({
     msg: "PUT API - controller",
+    id,
   });
 };
 
