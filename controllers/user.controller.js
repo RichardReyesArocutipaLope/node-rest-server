@@ -1,31 +1,40 @@
 import { request, response } from "express";
-import { User } from "../models/usuario.js";
+import { User } from "../models/user.model.js";
+import bcryptjs from "bcryptjs";
 
-export const userGet = (req = request, res = response) => {
-  const query = req.query;
+export const userGet = async (req = request, res = response) => {
+  const { limit = 5, offset = 0 } = req.query;
+
+  const users = await User.find().skip(+offset).limit(+limit);
   res.json({
-    msg: "GET API - controller",
-    query,
+    users,
   });
 };
 
-export const userPut = (req, res = response) => {
+export const userPut = async (req, res = response) => {
   const id = req.params.id;
-  res.json({
-    msg: "PUT API - controller",
-    id,
-  });
+  const { _id, password, google, ...rest } = req.body;
+  // TODO validar contra base de datos
+  if (password) {
+    const salt = bcryptjs.genSaltSync();
+    rest.password = bcryptjs.hashSync(password, salt);
+  }
+
+  const usuario = await User.findByIdAndUpdate(id, rest, { new: true });
+  res.json(usuario);
 };
 
 export const userPost = async (req, res = response) => {
-  const body = req.body;
+  const { name, email, password, role } = req.body;
+  const usuario = new User({ name, email, password, role });
 
-  const usuario = new User(body);
+  // Encriptar la contraseña
+  const salt = bcryptjs.genSaltSync();
+  usuario.password = bcryptjs.hashSync(password, salt);
+
+  // Guardar en BD
   await usuario.save();
-  res.json({
-    msg: "POST API - controller",
-    usuario,
-  });
+  res.json(usuario);
 };
 
 export const userDelete = (req, res = response) => {
