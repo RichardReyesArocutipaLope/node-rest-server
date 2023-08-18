@@ -1,4 +1,5 @@
 import { request, response } from "express";
+import { User } from "../models/usuario.js";
 
 export const userGet = (req = request, res = response) => {
   const query = req.query;
@@ -16,12 +17,14 @@ export const userPut = (req, res = response) => {
   });
 };
 
-export const userPost = (req, res = response) => {
+export const userPost = async (req, res = response) => {
   const body = req.body;
 
+  const usuario = new User(body);
+  await usuario.save();
   res.json({
     msg: "POST API - controller",
-    body,
+    usuario,
   });
 };
 
