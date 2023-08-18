@@ -4,10 +4,13 @@ import bcryptjs from "bcryptjs";
 
 export const userGet = async (req = request, res = response) => {
   const { limit = 5, offset = 0 } = req.query;
-
-  const users = await User.find().skip(+offset).limit(+limit);
+  const query = { state: true };
+  const getUsers = User.find(query).skip(+offset).limit(+limit);
+  const getTotal = User.countDocuments(query);
+  const [users, total] = await Promise.all([getUsers, getTotal]);
   res.json({
     users,
+    total,
   });
 };
 
@@ -37,9 +40,16 @@ export const userPost = async (req, res = response) => {
   res.json(usuario);
 };
 
-export const userDelete = (req, res = response) => {
+export const userDelete = async (req, res = response) => {
+  const { id } = req.params;
+
+  //Fisicamente lo borramos
+  // const user = await User.findByIdAndDelete(id);
+
+  const user = await User.findByIdAndUpdate(id, { state: false });
+
   res.json({
-    msg: "DELETE API - controller",
+    user,
   });
 };
 
