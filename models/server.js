@@ -2,10 +2,12 @@ import express from "express";
 import cors from "cors";
 import { router } from "../routes/user.route.js";
 import { dbConnection } from "../database/config.js";
+import { authRouter } from "../routes/auth.route.js";
 export class Server {
   constructor() {
     this.app = express();
     this.usuariosRoutePath = "/api/usuarios";
+    this.authRoutePath = "/api/auth";
     this.port = process.env.PORT;
 
     // Conectar a Mongo
@@ -31,6 +33,7 @@ export class Server {
   }
 
   routes() {
+    this.app.use(this.authRoutePath, authRouter);
     this.app.use(this.usuariosRoutePath, router);
   }
 
