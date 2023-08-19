@@ -42,15 +42,8 @@ export const userPost = async (req, res = response) => {
 
 export const userDelete = async (req, res = response) => {
   const { id } = req.params;
-
-  //Fisicamente lo borramos
-  // const user = await User.findByIdAndDelete(id);
-
   const user = await User.findByIdAndUpdate(id, { state: false });
-
-  res.json({
-    user,
-  });
+  res.json(user);
 };
 
 export const userPatch = (req, res = response) => {
