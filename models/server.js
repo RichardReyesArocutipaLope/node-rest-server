@@ -3,12 +3,17 @@ import cors from "cors";
 import { router } from "../routes/user.route.js";
 import { dbConnection } from "../database/config.js";
 import { authRouter } from "../routes/auth.route.js";
+import { categoriesRouter } from "../routes/categories.route.js";
 export class Server {
   constructor() {
     this.app = express();
-    this.usuariosRoutePath = "/api/usuarios";
-    this.authRoutePath = "/api/auth";
     this.port = process.env.PORT;
+
+    this.paths = {
+      auth: "/api/auth",
+      users: "/api/usuarios",
+      categories: "/api/categories",
+    };
 
     // Conectar a Mongo
     this.conectarDB();
@@ -33,8 +38,9 @@ export class Server {
   }
 
   routes() {
-    this.app.use(this.authRoutePath, authRouter);
-    this.app.use(this.usuariosRoutePath, router);
+    this.app.use(this.paths.auth, authRouter);
+    this.app.use(this.paths.users, router);
+    this.app.use(this.paths.categories, categoriesRouter);
   }
 
   listen() {

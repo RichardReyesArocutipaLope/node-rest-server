@@ -1,3 +1,4 @@
+import { Category } from "../models/category.model.js";
 import { Role } from "../models/role.model.js";
 import { User } from "../models/user.model.js";
 
@@ -15,4 +16,9 @@ export const existsEmail = async (email) => {
 export const existsUserById = async (id) => {
   const existsUser = await User.findById(id);
   if (!existsUser) throw new Error(`El id: ${id} no existe`);
+};
+
+export const existsCategory = async (id) => {
+  const category = await Category.findById(id);
+  if (!category) throw new Error(`El id: ${id} no existe`);
 };
