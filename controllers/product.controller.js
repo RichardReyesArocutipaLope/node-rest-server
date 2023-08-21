@@ -82,7 +82,7 @@ export const updateProduct = async (req = request, res = response) => {
   const product = await Product.findByIdAndUpdate(
     id,
     {
-      name: name.toUpperCase(),
+      name: name?.toUpperCase(),
       category: getCategory?._id || category,
       ...rest,
     },
