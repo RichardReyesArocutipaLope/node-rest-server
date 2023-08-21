@@ -21,7 +21,7 @@ export const uploadFileHelper = (
     }
 
     const finalName = uuidv4() + "." + fileExtension;
-    const uploadPath = __dirname + "/../uploads/" + folder + finalName;
+    const uploadPath = __dirname + "/../uploads/" + folder + "/" + finalName;
 
     file.mv(uploadPath, (err) => {
       if (err) return reject(err);
