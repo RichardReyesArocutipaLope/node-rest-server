@@ -5,6 +5,7 @@ import { dbConnection } from "../database/config.js";
 import { authRouter } from "../routes/auth.route.js";
 import { categoriesRouter } from "../routes/categories.route.js";
 import { productsRouter } from "../routes/products.route.js";
+import { searchRouter } from "../routes/search.route.js";
 export class Server {
   constructor() {
     this.app = express();
@@ -15,6 +16,7 @@ export class Server {
       users: "/api/usuarios",
       categories: "/api/categories",
       products: "/api/products",
+      search: "/api/search",
     };
 
     // Conectar a Mongo
@@ -44,6 +46,7 @@ export class Server {
     this.app.use(this.paths.users, router);
     this.app.use(this.paths.categories, categoriesRouter);
     this.app.use(this.paths.products, productsRouter);
+    this.app.use(this.paths.search, searchRouter);
   }
 
   listen() {

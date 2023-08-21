@@ -26,7 +26,7 @@ export const getProduct = async (req = request, res = response) => {
     .populate("category")
     .populate("user");
   if (!product) {
-    return res.status(500).json({
+    return res.status(400).json({
       msg: "Producto no encontrado",
     });
   }
