@@ -4,6 +4,7 @@ import { router } from "../routes/user.route.js";
 import { dbConnection } from "../database/config.js";
 import { authRouter } from "../routes/auth.route.js";
 import { categoriesRouter } from "../routes/categories.route.js";
+import { productsRouter } from "../routes/products.route.js";
 export class Server {
   constructor() {
     this.app = express();
@@ -13,6 +14,7 @@ export class Server {
       auth: "/api/auth",
       users: "/api/usuarios",
       categories: "/api/categories",
+      products: "/api/products",
     };
 
     // Conectar a Mongo
@@ -41,6 +43,7 @@ export class Server {
     this.app.use(this.paths.auth, authRouter);
     this.app.use(this.paths.users, router);
     this.app.use(this.paths.categories, categoriesRouter);
+    this.app.use(this.paths.products, productsRouter);
   }
 
   listen() {
