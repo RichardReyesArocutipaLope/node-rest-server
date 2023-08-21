@@ -28,3 +28,14 @@ export const existsProduct = async (id) => {
   const product = await Product.findById(id);
   if (!product) throw new Error(`El id: ${id} no existe`);
 };
+
+//Validar collections valid
+export const collectionsAllowed = (collection = "", collections = []) => {
+  const valid = collections.includes(collection);
+  if (!valid) {
+    throw new Error(
+      `La coleccion ${collection} no es permitida - ${collections}`
+    );
+  }
+  return true;
+};

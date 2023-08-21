@@ -4,7 +4,7 @@ import { User } from "../models/user.model.js";
 import { Category } from "../models/category.model.js";
 import { Product } from "../models/producto.model.js";
 
-export const collectionsAllowed = ["users", "categories", "products", "roles"];
+const collectionsAllowed = ["users", "categories", "products", "roles"];
 
 const searchUsers = async (term = "", res = response) => {
   const isMongoId = isValidObjectId(term);
