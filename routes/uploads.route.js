@@ -4,6 +4,7 @@ import { validarCampos } from "../middlewares/validarCampos.js";
 import {
   showImage,
   updateImage,
+  updateImageCloudinary,
   uploadFile,
 } from "../controllers/uploads.controller.js";
 import { collectionsAllowed } from "../helpers/dbValidators.js";
@@ -22,7 +23,8 @@ uploadsRouter.put(
     ),
     validarCampos,
   ],
-  updateImage
+  // updateImage
+  updateImageCloudinary
 );
 
 uploadsRouter.get(

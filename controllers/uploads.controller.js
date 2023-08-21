@@ -2,6 +2,9 @@ import { request, response } from "express";
 import { uploadFileHelper } from "../helpers/uploadFile.js";
 import { User } from "../models/user.model.js";
 import { Product } from "../models/producto.model.js";
+// Require the Cloudinary library
+import { v2 as cloudinary } from "cloudinary";
+cloudinary.config(process.env.CLOUDINARY_URL);
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -98,4 +101,42 @@ export const showImage = async (req = request, res = response) => {
 
   const noImage = path.resolve(__dirname, "../assets", "no-image.jpg");
   return res.sendFile(noImage);
+};
+
+export const updateImageCloudinary = async (req = request, res = response) => {
+  const { collection, id } = req.params;
+
+  let model;
+  switch (collection) {
+    case "users":
+      model = await User.findById(id);
+      if (!model)
+        return res
+          .status(400)
+          .json({ msg: `No existe un usuario con el id ${id}` });
+      break;
+
+    case "products":
+      model = await Product.findById(id);
+      if (!model)
+        return res
+          .status(400)
+          .json({ msg: `No existe un producto con el id ${id}` });
+      break;
+
+    default:
+      return res.status(500).json({ msg: "Coleccion no validada" });
+  }
+
+  try {
+    if (model.img) {
+    }
+    const { tempFilePath } = req.files.file;
+    const { secure_url } = await cloudinary.uploader.upload(tempFilePath);
+    model.img = secure_url;
+    await model.save();
+    res.json(model);
+  } catch (error) {
+    res.status(400).json({ error });
+  }
 };
